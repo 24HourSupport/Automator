@@ -4,6 +4,7 @@ import shutil
 from typing import Union
 # noinspection PyUnresolvedReferences
 from win32com.shell import shell, shellcon
+from win32com.client import GetObject
 
 import wmi
 from PyQt6.QtCore import pyqtSignal, Qt, QProcess, QMimeData, QUrl
@@ -305,6 +306,21 @@ class SysInfoWindow(QDialog):
                 f.write('{}\t{}\t{}\t{}\t{}\t\n'.format(
                     ram_stick.Name, ram_stick.Speed, ram_stick.DeviceLocator, ram_stick.PartNumber, ram_stick.Manufacturer
                 ))
+            # See https://docs.microsoft.com/en-us/windows/win32/wmicoreprov/wmimonitorid
+            objWMI_WmiMonitorID, objWMI_WmiMonitorConnectionParams  = GetObject('winmgmts:\\\\.\\root\\WMI').InstancesOf('WmiMonitorID'), GetObject('winmgmts:\\\\.\\root\\WMI').InstancesOf('WmiMonitorConnectionParams')
+            _D3DKMDT_VIDEO_OUTPUT_TECHNOLOGY = {"-2"  :   "UNINITIALIZED", "-1"  :   "OTHER", "0"  :   "HD15", "1"  :   "SVIDEO", "2"  :   "COMPOSITE_VIDEO", "3"  :   "COMPONENT_VIDEO", "4"  :   "DVI", "5"  :   "HDMI", "6"  :   "LVDS", "8"  :   "D_JPN", "9"  :   "SDI", "10"  :   "DISPLAYPORT_EXTERNAL", "11"  :   "DISPLAYPORT_EMBEDDED", "12"  :   "UDI_EXTERNAL", "13"  :   "UDI_EMBEDDED", "14"  :   "SDTVDONGLE", "15"  :   "MIRACAST", "0x80000000"  :   "INTERNAL", "D3DKMDT_VOT_SVIDEO"  :   "SVIDEO_7PIN", "D3DKMDT_VOT_COMPOSITE_VIDEO"  :   "RF", "D3DKMDT_VOT_COMPONENT_VIDEO"  :   "BNC", "D3DKMDT_VOT_UNINITIALIZED"  :   "UNINITIALIZED"} 
+            f.write('Model\tConnector\t\n')
+            monitors = {} 
+            for obj in objWMI_WmiMonitorID:
+    	        if obj.InstanceName != None:
+                    monitors[str(obj.InstanceName)] = []
+                    monitors[str(obj.InstanceName)].append(''.join(chr(i) for i in obj.UserFriendlyName))        
+            for obj in objWMI_WmiMonitorConnectionParams:
+    	        if obj.InstanceName != None:
+                  monitors[str(obj.InstanceName)].append(_D3DKMDT_VIDEO_OUTPUT_TECHNOLOGY[str(obj.VideoOutputTechnology)])
+            for monitor in monitors:
+                 f.write('{}\t{}\t\n'.format(monitors[monitor][0], monitors[monitor][1]))    
+            
 
         # Copy file to clipboard
         clipboard = QGuiApplication.clipboard()
