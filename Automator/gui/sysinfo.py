@@ -309,8 +309,6 @@ class SysInfoWindow(QDialog):
             # See https://docs.microsoft.com/en-us/windows/win32/wmicoreprov/wmimonitorid
             objWMI_WmiMonitorID, objWMI_WmiMonitorConnectionParams  = GetObject('winmgmts:\\\\.\\root\\WMI').InstancesOf('WmiMonitorID'), GetObject('winmgmts:\\\\.\\root\\WMI').InstancesOf('WmiMonitorConnectionParams')
             _D3DKMDT_VIDEO_OUTPUT_TECHNOLOGY = {"-2"  :   "UNINITIALIZED", "-1"  :   "OTHER", "0"  :   "HD15", "1"  :   "SVIDEO", "2"  :   "COMPOSITE_VIDEO", "3"  :   "COMPONENT_VIDEO", "4"  :   "DVI", "5"  :   "HDMI", "6"  :   "LVDS", "8"  :   "D_JPN", "9"  :   "SDI", "10"  :   "DISPLAYPORT_EXTERNAL", "11"  :   "DISPLAYPORT_EMBEDDED", "12"  :   "UDI_EXTERNAL", "13"  :   "UDI_EMBEDDED", "14"  :   "SDTVDONGLE", "15"  :   "MIRACAST", "0x80000000"  :   "INTERNAL", "D3DKMDT_VOT_SVIDEO"  :   "SVIDEO_7PIN", "D3DKMDT_VOT_COMPOSITE_VIDEO"  :   "RF", "D3DKMDT_VOT_COMPONENT_VIDEO"  :   "BNC", "D3DKMDT_VOT_UNINITIALIZED"  :   "UNINITIALIZED"} 
-            f.write('[MonitorInfo]\n')
-            f.write('\n')
             f.write('Model\tConnector\t\n')
             monitors = {} 
             for obj in objWMI_WmiMonitorID:
