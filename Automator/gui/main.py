@@ -26,8 +26,8 @@ class MainWindow(QMainWindow):
         layout.setAlignment(title, Qt.AlignmentFlag.AlignHCenter)
 
         button_data = [
-            ('SFC / DISM / CHKDSK scans', 'rescuecommands', RescueCommandsWindow(self).exec),
-            ('MSInfo32 Report (Sysinfo)', 'sysinfo', SysInfoWindow(self).exec),
+            ('SFC / DISM / CHKDSK scans', 'rescuecommands', lambda: RescueCommandsWindow(self).exec()),
+            ('MSInfo32 Report (Sysinfo)', 'sysinfo', lambda: SysInfoWindow(self).exec()),
             ('Check for updates', 'updates', None),
             ('Flash ISOs', 'isoflash', None),
             ('Enter safe mode', 'safemode', None),
