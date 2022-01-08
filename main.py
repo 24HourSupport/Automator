@@ -25,7 +25,7 @@ def main():
     )
 
     app = QApplication(argv)
-    app.setWindowIcon(QIcon(os.path.join(os.path.dirname(__file__), '24hs.png')))
+    app.setWindowIcon(QIcon(os.path.join(os.path.dirname(__file__), 'icons', '24hs.png')))
     app_id = '24hs.automator'
     ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(app_id)
     window = MainWindow()
