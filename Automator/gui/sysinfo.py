@@ -2,45 +2,17 @@ import logging
 import os.path
 import shutil
 from typing import Union
+
+import wmi
+from PyQt6.QtCore import Qt, QProcess, QMimeData, QUrl
+from PyQt6.QtGui import QCloseEvent, QGuiApplication
+from PyQt6.QtWidgets import QDialog, QHBoxLayout, QGroupBox, QGridLayout, QSpacerItem, QSizePolicy, \
+    QButtonGroup, QRadioButton, QVBoxLayout, QLineEdit, QPushButton, QMessageBox
 # noinspection PyUnresolvedReferences
 from win32com.shell import shell, shellcon
 
-import wmi
-from PyQt6.QtCore import pyqtSignal, Qt, QProcess, QMimeData, QUrl
-from PyQt6.QtGui import QMouseEvent, QCloseEvent, QGuiApplication
-from PyQt6.QtWidgets import QDialog, QHBoxLayout, QGroupBox, QGridLayout, QLabel, QSpacerItem, QSizePolicy, \
-    QButtonGroup, QRadioButton, QVBoxLayout, QWidget, QLineEdit, QPushButton, QMessageBox
-
+from Automator.gui.common_components import WrappingLabel, WrappingRadioButton
 from Automator.misc.platform_info import is_laptop
-
-
-class WrappingLabel(QLabel):
-    clicked = pyqtSignal()
-
-    def __init__(self, *args, **kwargs):
-        super(WrappingLabel, self).__init__(*args, **kwargs)
-        self.setWordWrap(True)
-
-    def mousePressEvent(self, ev: QMouseEvent) -> None:
-        if ev.button() == Qt.MouseButton.LeftButton:
-            # noinspection PyUnresolvedReferences
-            self.clicked.emit()
-
-
-class WrappingRadioButton(QWidget):
-    # Thanks Qt for not providing Word Wrapping to QRadioButtons natively
-    def __init__(self, text: str, *args, **kwargs):
-        super(WrappingRadioButton, self).__init__(*args, **kwargs)
-        self._layout = QHBoxLayout()
-        self.button = QRadioButton()
-        self._label = WrappingLabel(text)
-        self.button.text = self._label.text
-        # noinspection PyUnresolvedReferences
-        self._label.clicked.connect(self.button.click)
-        self._layout.addWidget(self.button, 0)
-        self._layout.addWidget(self._label, 1)
-        self._layout.setContentsMargins(0, 0, 0, 0)
-        self.setLayout(self._layout)
 
 
 class SysInfoWindow(QDialog):
