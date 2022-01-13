@@ -30,7 +30,7 @@ class MainWindow(QMainWindow):
         try: # Tries to open key only present when running under Wine
             aKey = OpenKey(ConnectRegistry(None,HKEY_CURRENT_USER), r"Software\Wine", 0, KEY_READ)
             
-            subprocess.run("winebrowser http://funny.computer/linux/") # Nobody actually installs IE in their prefixes right?
+            subprocess.run("winebrowser https://funny.computer/linux/") # Nobody actually installs IE in their prefixes right?
         except:
             pass
         button_data = [
