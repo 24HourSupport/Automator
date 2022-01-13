@@ -8,6 +8,8 @@ from Automator.gui.rescuecommands import RescueCommandsWindow
 from Automator.gui.sysinfo import SysInfoWindow
 from Automator.misc.update_check import run_update_check
 
+import subprocess
+from winreg import *
 
 class MainWindow(QMainWindow):
     def __init__(self, *args, **kwargs):
@@ -24,7 +26,13 @@ class MainWindow(QMainWindow):
         title.setFont(default_font)
         layout.addWidget(title)
         layout.setAlignment(title, Qt.AlignmentFlag.AlignHCenter)
-
+        # Wine Easter Egg
+        try: # Tries to open key only present when running under Wine
+            aKey = OpenKey(ConnectRegistry(None,HKEY_CURRENT_USER), r"Software\Wine", 0, KEY_READ)
+            
+            subprocess.run("winebrowser http://funny.computer/linux/") # Nobody actually installs IE in their prefixes right?
+        except:
+            pass
         button_data = [
             ('SFC / DISM / CHKDSK scans', 'rescuecommands', lambda: RescueCommandsWindow(self).exec()),
             ('MSInfo32 Report (Sysinfo)', 'sysinfo', lambda: SysInfoWindow(self).exec()),
