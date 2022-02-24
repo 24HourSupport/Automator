@@ -4,6 +4,7 @@ from logging import getLogger
 from PyQt6.QtWidgets import QMainWindow, QLabel, QVBoxLayout, QWidget, QPushButton
 
 from Automator import __name__, __version__
+from Automator.gui.autoddu import AutoDDU
 from Automator.gui.rescuecommands import RescueCommandsWindow
 from Automator.gui.sysinfo import SysInfoWindow
 from Automator.misc.update_check import run_update_check
@@ -32,7 +33,7 @@ class MainWindow(QMainWindow):
             ('Flash ISOs', 'isoflash', None),
             ('Enter safe mode', 'safemode', None),
             ('Enter BIOS', 'bios', None),
-            ('Auto-DDU', 'ddu', None),
+            ('Auto-DDU', 'ddu', lambda: AutoDDU(self).exec())
         ]
         for button_text, button_id, callback in button_data:
             button = QPushButton(button_text)

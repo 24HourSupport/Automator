@@ -1,5 +1,5 @@
 PyQt6~=6.2.0
 WMI~=1.5.1
 watchdog~=2.1.6
-requests~=2.26.0
+requests~=2.27.1
 packaging~=21.3

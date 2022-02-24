@@ -9,11 +9,10 @@ import wmi
 from PyQt6.QtCore import pyqtSignal, Qt, QThread, QObject
 from PyQt6.QtGui import QMouseEvent, QMovie, QPixmap
 from PyQt6.QtWidgets import QLabel, QWidget, QHBoxLayout, QRadioButton, QAbstractButton, QMessageBox, QVBoxLayout
-from watchdog.observers import Observer
 from watchdog.events import PatternMatchingEventHandler
+from watchdog.observers import Observer
 
 from Automator.misc.cmd import silent_run_as_admin
-
 
 icons_dir = os.path.join(os.path.dirname(__file__), '..', '..', 'icons')
 
@@ -245,18 +244,18 @@ class StepListItem(QWidget):
         else:
             self._statusLabel.setMovie(QMovie())
             self._in_progress_movie.stop()
-            if new_status == StepListItemStatus.DEFAULT:
-                self._statusLabel.setPixmap(QPixmap(os.path.join(icons_dir, 'todo.svg')).scaled(
-                    int(self._statusLabel.width() / 2), int(self._statusLabel.height() / 2), Qt.AspectRatioMode.KeepAspectRatio
-                ))
-            elif new_status == StepListItemStatus.SUCCESS:
-                self._statusLabel.setPixmap(QPixmap(os.path.join(icons_dir, 'success.svg')).scaled(
-                    self._statusLabel.width() / 2, self._statusLabel.height() / 2, Qt.AspectRatioMode.KeepAspectRatio
-                ))
-            elif new_status == StepListItemStatus.FAILURE:
-                self._statusLabel.setPixmap(QPixmap(os.path.join(icons_dir, 'error.svg')).scaled(
-                    self._statusLabel.width() / 2, self._statusLabel.height() / 2, Qt.AspectRatioMode.KeepAspectRatio
-                ))
+
+            status_to_icon = {
+                StepListItemStatus.DEFAULT: 'todo.svg',
+                StepListItemStatus.SUCCESS: 'success.svg',
+                StepListItemStatus.FAILURE: 'error.svg'
+            }
+            self._statusLabel.setPixmap(QPixmap(
+                os.path.join(icons_dir, status_to_icon[new_status])
+            ).scaled(
+                int(self._statusLabel.width() / 2), int(self._statusLabel.height() / 2),
+                Qt.AspectRatioMode.KeepAspectRatio
+            ))
 
     @property
     def text(self):
